@@ -26,7 +26,6 @@
     },
     {
       "matches": ["*://www.reddit.com/", "*://www.reddit.com/r/*"],
-      "exclude_matches": ["*://www.reddit.com/r/*/comments/*"],
       "run_at": "document_idle",
       "js": ["functions.js", "injectMain.js"]
     }
