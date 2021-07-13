@@ -5,12 +5,7 @@ function getElementsByTextInclusion(str, tag = 'span') {
 function addLinkButton() {
     console.log("Adding button!");
 
-    // check each possible candidate and only use the right one
-    // TODO
-
-    // FOR NOW WE ASSUME THAT THE FIRST ONE IS THE RIGHT ONE
     const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
-
     const upvotedSpan = candidates[0];
     const parentDiv = upvotedSpan.parentElement; // holds only upvoted %
     const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %

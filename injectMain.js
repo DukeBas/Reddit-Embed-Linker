@@ -17,14 +17,7 @@ observer.observe(target, { attributes: true, attributeFilter: ['style'] });
 console.log(target)
 
 function postInFocus() {
-    console.log("Post in focus!");
-    // const candidates = getElementsByTextInclusion('% Upvoted');
-    // console.log(candidates);
-
-    // setTimeout(() => {
-    //     const candidates = getElementsByTextInclusion('% Upvoted');
-    //     console.log(candidates);
-    // }, 200);
+    // console.log("Post in focus!");
 
     // check every 200ms for an upvoted % span element
     let candidates = [];
@@ -38,6 +31,7 @@ function postInFocus() {
             addLinkButton();
         }
     }
+    
     let check = setInterval(spanCheck, 200);
 }
 
