@@ -22,12 +22,12 @@
     {
       "matches": ["*://www.reddit.com/r/*/comments/*"],
       "run_at": "document_idle",
-      "js": ["functions.js", "injectPost.js"]
+      "js": ["js/functions.js", "js/injectPost.js"]
     },
     {
       "matches": ["*://www.reddit.com/", "*://www.reddit.com/r/*"],
       "run_at": "document_idle",
-      "js": ["functions.js", "injectMain.js"]
+      "js": ["js/functions.js", "js/injectMain.js"]
     }
   ]
 }

@@ -1,8 +1,8 @@
-function getElementsByTextInclusion(str, tag = 'span') {
+export function getElementsByTextInclusion(str: string, tag: string = 'span') {
     return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.innerHTML.includes(str));
 }
 
-function addLinkButton() {
+export function addLinkButton() {
     console.log("Adding button!");
 
     const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
@@ -15,7 +15,7 @@ function addLinkButton() {
 
     // create a div for the new button
     const newDiv = document.createElement('div');
-    newDiv.class = 'newDiv';
+    newDiv.className = 'newDiv';
 
     // create a button for the new div that copies link to clipboard when clicked
     const linkButton = document.createElement('button');
@@ -28,7 +28,7 @@ function addLinkButton() {
     // add created elements to DOM
     buttons.appendChild(newDiv);
 
-    console.log("PARENTTREE", linkButton, linkButton.parentElement, linkButton.parentElement.parentElement);
+    console.log("PARENTTREE", linkButton, linkButton.parentElement, linkButton.parentElement?.parentElement);
 
     // TODO check if link is still there, if not place it again and check again soon later
 

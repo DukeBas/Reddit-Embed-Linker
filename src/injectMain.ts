@@ -1,3 +1,5 @@
+import { getElementsByTextInclusion, addLinkButton } from "./functions";
+
 console.log("Running main!");
 
 // use an observer to detect when the body style changes
