@@ -9,7 +9,7 @@ export function addLinkButton(): void {
     const upvotedSpan = candidates[0];
     const parentDiv = upvotedSpan.parentElement; // holds only upvoted %
     // const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
-    const buttons = parentDiv.nextElementSibling ? parentDiv.nextElementSibling : parentDiv.previousElementSibling; // holds only the buttons
+    const buttons: HTMLDivElement = parentDiv.nextElementSibling ? parentDiv.nextElementSibling : parentDiv.previousElementSibling; // holds only the buttons
 
     // create a div, that activates button event when clicked
     const newDiv = document.createElement('div');
@@ -22,10 +22,13 @@ export function addLinkButton(): void {
     newDiv.onclick = buttonClick;
 
     // copy styling
-    newDiv.className = buttons.children[0].className;
-    newDiv.style.cursor = "pointer";
-    linkText.className = buttons.children[0].children[1].className;
-    
+    try {
+        const safeStyleDiv = buttons.children[1];
+        newDiv.className = safeStyleDiv.className;
+        linkText.className = safeStyleDiv.children[0].className;
+    } finally {
+        newDiv.style.cursor = "pointer";
+    }
 
     // add button to div
     newDiv.appendChild(linkText);
