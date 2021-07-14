@@ -11,16 +11,24 @@ export function addLinkButton(): void {
     // const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
     const buttons = parentDiv.nextElementSibling ? parentDiv.nextElementSibling : parentDiv.previousElementSibling; // holds only the buttons
 
-    // create a div for the new button
+    // create a div, that activates button event when clicked
     const newDiv = document.createElement('div');
     newDiv.className = 'getEmbeddedLinkDiv';
     newDiv.id = 'getEmbeddedLinkDiv';
 
-    // create a button for the new div that copies link to clipboard when clicked
-    const linkButton = document.createElement('button');
-    linkButton.innerHTML = "Get link";
-    linkButton.onclick = buttonClick;
-    newDiv.appendChild(linkButton);
+    // create text for in the div
+    const linkText = document.createElement('button');
+    linkText.innerHTML = "Get link";
+    newDiv.onclick = buttonClick;
+
+    // copy styling
+    newDiv.className = buttons.children[0].className;
+    newDiv.style.cursor = "pointer";
+    linkText.className = buttons.children[0].children[1].className;
+    
+
+    // add button to div
+    newDiv.appendChild(linkText);
 
     // add created elements to DOM
     buttons.appendChild(newDiv);
@@ -95,12 +103,12 @@ function makeVideoLink(link: string, start: HTMLElement) {
     });
     // get highest quality
     let highestQuality = "240";
-    if (settingsSVG){
+    if (settingsSVG) {
         const settingsButton = settingsSVG?.parentElement;
         settingsButton?.click(); // simulate click on settings to make quality settings appear
 
         const qualitySettings = ["1080", "720", "480", "360", "240"];
-        qualitySettings.some((qS)=>{
+        qualitySettings.some((qS) => {
             highestQuality = qS;
             return goUpFindTag(start, 'span', (c: HTMLSpanElement) => {
                 return c.innerHTML.includes(qS);
