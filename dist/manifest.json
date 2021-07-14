@@ -1,6 +1,6 @@
 {
   "name": "Reddit Embed Linker",
-  "description": "Chrome extensions that adds a button to Reddit posts that copies a link to clipboard that embeds the media for services like Discord.",
+  "description": "Chrome extensions that adds a button to Reddit posts that copies an embeddable link to clipboard for services like Discord.",
   "version": "1.0",
   "manifest_version": 3,
   "permissions": ["activeTab", "scripting"],

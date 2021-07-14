@@ -21,7 +21,7 @@ console.log(target)
 function postInFocus() {
     // console.log("Post in focus!");
 
-    // check every 200ms for an upvoted % span element
+    // check every 200ms for an 'upvoted %' span element until one is found
     let candidates = [];
     function spanCheck() {
         candidates = getElementsByTextInclusion('% Upvoted');

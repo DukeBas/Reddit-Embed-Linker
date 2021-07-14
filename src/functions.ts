@@ -8,7 +8,7 @@ export function addLinkButton(): void {
     const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
     const upvotedSpan = candidates[0];
     const parentDiv = upvotedSpan.parentElement; // holds only upvoted %
-    const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
+    // const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
     const buttons = parentDiv.nextElementSibling ? parentDiv.nextElementSibling : parentDiv.previousElementSibling; // holds only the buttons
 
     // create a div for the new button
@@ -37,6 +37,7 @@ export function addLinkButton(): void {
 
 
 // called when the added button is clicked
+// only copies to clipboard if a (valid) link is found
 function buttonClick(e: MouseEvent) {
     // console.log("Clicked!", e);
 
@@ -44,27 +45,51 @@ function buttonClick(e: MouseEvent) {
 
     // find link
     if (e.target) {
+        // look for image link
         const asElement = (t: MouseEvent) => (t.target as HTMLElement);
         tag = goUpFindTag(asElement(e), 'img', postImageCheck);
-        // console.log(tag);
+
+        if (tag) {
+            // image found
+            // get image embed link
+            const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
+
+            // copy found link to clipboard, if it is defined
+            if (embedLink != undefined) {
+                copyToClipboard(embedLink);
+            }
+        } else {
+            // if no image tag is found
+            // look for video
+            tag = goUpFindTag(asElement(e), 'source');
+
+            if (tag) {
+                // if one is found
+                const src: string = (tag as any).src;
+                console.log(src)
+                // check if image is gif
+                if (src.includes('.gif')) {
+                    copyToClipboard(makeGIFLink(src));
+                } else {
+
+                }
+            }
+        }
     } else {
         // should never happen
         console.warn("No event target found for mouse click");
     }
-
-    if (tag) {
-        // get embed link
-        const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
-
-        // copy found link to clipboard, if it is defined
-        if (embedLink != undefined) {
-            copyToClipboard(embedLink);
-        }
-    }
 }
 
 
+function makeGIFLink(link: string) {
+    let output = link.split('?')[0]; // remove irrelevant parts
+    output = output.replace('preview', 'i');
+    return output;
+}
 
+
+// can only be used with user input
 function copyToClipboard(str: string): void {
     const textarea = document.createElement('textarea');
     textarea.value = str;
