@@ -2,7 +2,7 @@ export function getElementsByTextInclusion(str: string, tag: string = 'span') {
     return Array.prototype.slice.call(document.getElementsByTagName(tag)).filter(el => el.innerHTML.includes(str));
 }
 
-export function addLinkButton() {
+export function addLinkButton(): void {
     console.log("Adding button!");
 
     const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
@@ -20,9 +20,7 @@ export function addLinkButton() {
     // create a button for the new div that copies link to clipboard when clicked
     const linkButton = document.createElement('button');
     linkButton.innerHTML = "Get link";
-    linkButton.onclick = () => {
-        alert("Clicked!");
-    }
+    linkButton.onclick = buttonClick;
     newDiv.appendChild(linkButton);
 
     // add created elements to DOM
@@ -32,4 +30,26 @@ export function addLinkButton() {
 
     // TODO check if link is still there, if not place it again and check again soon later
 
+}
+
+// called when the added button is clicked
+function buttonClick() {
+    console.log("Clicked!");
+
+    // find link
+    //TODO
+    const embedLink: string = "www.example.com";
+
+    // copy found link to clipboard
+    copyToClipboard(embedLink);
+}
+
+function copyToClipboard(str: string): void {
+    const textarea = document.createElement('textarea');
+    textarea.value = str;
+    // el.style.visibility = "hidden";
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
 }
