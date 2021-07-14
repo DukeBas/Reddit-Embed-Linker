@@ -26,13 +26,13 @@ export function addLinkButton(): void {
     // add created elements to DOM
     buttons.appendChild(newDiv);
 
-    console.log("PARENTTREE", 
-    linkButton, 
-    linkButton.parentElement, 
-    linkButton.parentElement?.parentElement);
-    console.log("Siblings:", 
-    getSiblings(linkButton),
-    linkButton.parentElement ? getSiblings(linkButton.parentElement) : "No parent"
+    console.log("PARENTTREE",
+        linkButton,
+        linkButton.parentElement,
+        linkButton.parentElement?.parentElement);
+    console.log("Siblings:",
+        getSiblings(linkButton),
+        linkButton.parentElement ? getSiblings(linkButton.parentElement) : "No parent"
     )
 
     // TODO check if link is still there, if not place it again and check again soon later
@@ -89,9 +89,7 @@ function goUpFindTag(start: HTMLElement, tag: string) {
 }
 
 function getSiblings(el: HTMLElement) {
-    if (el.parentElement) {
-        return [...el.parentElement.children].filter(i => i != el); // filter starting point
-    } else {
-        return [];
-    }
+    return el.parentElement
+        ? [...el.parentElement.children].filter(i => i != el) // filter starting point
+        : [];
 }
