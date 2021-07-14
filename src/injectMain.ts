@@ -29,11 +29,12 @@ function postInFocus() {
             // span is created, continue to next step
             try {
                 clearInterval(check);   // clear timer if it exists
-            } catch { }
-            addLinkButton();
+            } finally {
+                addLinkButton();
+            }
         }
     }
-    
+
     let check = setInterval(spanCheck, 200);
 }
 
