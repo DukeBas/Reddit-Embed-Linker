@@ -66,12 +66,13 @@ function buttonClick(e: MouseEvent) {
             if (tag) {
                 // if one is found
                 const src: string = (tag as any).src;
-                console.log(src)
                 // check if image is gif
-                if (src.includes('.gif')) {
+                if (src.includes(".gif")) {
+                    // gif
                     copyToClipboard(makeGIFLink(src));
                 } else {
-
+                    // video
+                    copyToClipboard(makeVideoLink(src, asElement(e)));
                 }
             }
         }
@@ -82,12 +83,46 @@ function buttonClick(e: MouseEvent) {
 }
 
 
+function makeVideoLink(link: string, start: HTMLElement) {
+    let output = link.split('?')[0]; // remove irrelevant parts
+    output = link.split('/HLSPlaylist')[0]; // remove irrelevant parts
+
+    // get highest video quality, we need to get it from settings menu
+    // start by finding settings wheel
+    const settingsSVG = goUpFindTag(start, 'svg', (c: SVGElement) => {
+        const path = c.children[0];
+        return path.getAttribute('d')?.includes("M18.5,8.94,16.32,8.5h0a6.46,6.46,0,0,0-.79-1.9h0l1.23-1.85a1.08,1.08,0,0,0-1.5-1.5L13.41,4.47h0a6.45,6.45,0,0,0-1.9-.79h0L11.06,1.5a1.08,1.08,0,0,0-2.12,0L8.5,3.68h0a6.45,6.45,0,0,0-1.9.79h0L4.74,3.24a1.08,1.08,0,0,0-1.5,1.5L4.47,6.59h0a6.45,6.45,0,0,0-.79,1.9h0L1.5,8.94a1.08,1.08,0,0,0,0,2.12l2.18.44h0a6.45,6.45,0,0,0,.79,1.9h0L3.24,15.26a1.08,1.08,0,0,0,1.5,1.5l1.85-1.23h0a6.45,6.45,0,0,0,1.9.79h0l.44,2.18a1.08,1.08,0,0,0,2.12,0l.44-2.18h0a6.45,6.45,0,0,0,1.9-.79h0l1.85,1.23a1.08,1.08,0,0,0,1.5-1.5l-1.23-1.85h0a6.45,6.45,0,0,0,.79-1.9h0l2.18-.44a1.08,1.08,0,0,0,0-2.12ZM10,13.5A3.5,3.5,0,1,1,13.5,10,3.5,3.5,0,0,1,10,13.5Z")
+    });
+    // get highest quality
+    let highestQuality = "240";
+    if (settingsSVG){
+        const settingsButton = settingsSVG?.parentElement;
+        settingsButton?.click(); // simulate click on settings to make quality settings appear
+
+        const qualitySettings = ["1080", "720", "480", "360", "240"];
+        qualitySettings.some((qS)=>{
+            highestQuality = qS;
+            return goUpFindTag(start, 'span', (c: HTMLSpanElement) => {
+                return c.innerHTML.includes(qS);
+            }) ? true : false;
+        });
+        settingsButton?.click(); // simulate click on settings to make quality settings disappear
+    } else {
+        // something went wrong, return "undefined" so nothing gets copied to clipboard
+        return "undefined";
+    }
+
+    // add highest video quality to link
+    output += "/DASH_" + highestQuality + ".mp4";
+
+    return output;
+}
+
 function makeGIFLink(link: string) {
     let output = link.split('?')[0]; // remove irrelevant parts
     output = output.replace('preview', 'i');
     return output;
 }
-
 
 // can only be used with user input
 function copyToClipboard(str: string): void {
