@@ -1,5 +1,5 @@
 # Reddit-Embed-Linker
-Webextension that adds a button to Reddit posts that copies a link to clipboard that directly embeds for services like Discord. Natively compatible Google Chrome and Firefox.
+Open source web extension that adds a button to Reddit posts that copies a link to clipboard that directly embeds for services like Discord. Natively compatible Google Chrome and Firefox.
 
 ## Build
 A recent version of Node.js and NPM is required to build from the source code. First run 
