@@ -52,7 +52,7 @@ export function addLinkButton(): void {
 function buttonClick(e: MouseEvent) {
     // console.log("Clicked!", e);
 
-    let tag: Element | undefined = undefined;
+    let tag: HTMLElement | undefined = undefined;
 
     // find link
     if (e.target) {
@@ -64,12 +64,36 @@ function buttonClick(e: MouseEvent) {
             // image found
 
             // check if this post has multiple images
-            if (parentStackTagCheck(tag as HTMLElement, 'li', 5)) {
+            if (parentStackTagCheck(tag, 'li')) {
                 // multiple images
-                console.log("Multiple images!");
+                // console.log("Multiple images!");
+
+                //get the image that is currently in view
+                const listItems = goUpFindTag(tag, 'li')?.parentElement?.children;
+                if (listItems) {
+                    // if list items can be found
+                    let shownImageLI: HTMLLIElement | undefined;
+                    if (([...listItems] as HTMLLIElement[]).some((li) => {
+                        shownImageLI = li;
+                        return !li.style.left.includes('%');
+                    })) {
+                        // there is a shown image, 
+                        const image = (shownImageLI as HTMLLIElement).getElementsByTagName('img')[0];    // garuanteed to be HTMLLIElement
+                        if (image) {
+                            // image can be found
+                            // get image embed link
+                            const embedLink = getLinkFromImageElement(image as HTMLImageElement);
+
+                            // copy found link to clipboard, if it is defined
+                            if (embedLink != undefined) {
+                                copyToClipboard(embedLink);
+                            }
+                        }
+                    }
+                }
             } else {
                 // single image
-                console.log("image!");
+                // console.log("image!");
                 // get image embed link
                 const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
 
@@ -261,7 +285,7 @@ function postImageCheck(el: HTMLImageElement): boolean {
 }
 
 // checks if n layers of parents contain a certain tag,
-function parentStackTagCheck(start: HTMLElement, tag: string, height: number): boolean {
+function parentStackTagCheck(start: HTMLElement, tag: string, height: number = 6): boolean {
     let currentElement = start;
     let level = 0;
     while (currentElement != undefined && level < height) {
