@@ -1,10 +1,11 @@
-# ZIPs and publishes a new release to Chrome Web Store & Firefox Add-ons
+# Builds, zips and releases a new version of the extension
 
-name: Publish
+name: Release
 
 on:
-  release:
-    branches: [main]
+  push:
+    tags:
+    - '*'
   # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -36,7 +37,7 @@ jobs:
         with:
           name: REL-release
           path: release.zip
-  publish-CWS:
+  release:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -44,26 +45,8 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: REL-release
-      - uses: Klemensas/chrome-extension-upload-action@1.4.1
+      - name: Upload Release
+        uses: ncipollo/release-action@v1
         with:
-          refresh-token: "${{ secrets.GOOGLE_refreshToken }}"
-          client-id: "${{ secrets.GOOGLE_clientId }}"
-          client-secret: "${{ secrets.GOOGLE_clientSecret }}"
-          file-name: "./release.zip"
-          app-id: "lfjohnbbhhoecemedkgheejgclolojmi"
-          publish: true
-  publish-FFA:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Get zip file
-        uses: actions/download-artifact@v2
-        with:
-          name: REL-release
-      - uses: trmcnvn/firefox-addon@v1
-        with:
-          uuid: "{22e2863f-abc1-4c3e-81ec-8fbf8db0858f}"
-          xpi: build/my-addon.xpi
-          manifest: manifest.json
-          api-key: ${{ secrets.FIREFOX_API_KEY }}
-          api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+          artifacts: "release.zip"
+          token: ${{ secrets.GITHUB_TOKEN }}
