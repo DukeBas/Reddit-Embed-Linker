@@ -36,9 +36,9 @@ jobs:
           path: dist
           key: REL-
       - run: |
-        ls
-        cd dist
-        ls
+              ls
+              cd dist
+              ls
   add-to-release:
     needs: build
     runs-on: ubuntu-latest
