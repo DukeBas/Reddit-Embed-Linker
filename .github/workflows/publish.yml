@@ -45,6 +45,8 @@ jobs:
           key: REL-${{ steps.get-date.outputs.date }}
       - run: echo "test"
       - run: ls
+      - run: cd dist
+      - run: ls
   publish-CWS:
     needs: build
     runs-on: ubuntu-latest
