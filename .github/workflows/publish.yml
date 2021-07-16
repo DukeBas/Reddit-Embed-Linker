@@ -1,4 +1,4 @@
-# ZIPs and publishes a new release to Chrome Web Store & Firefox Add-ons
+# ZIPs/generates XPI and publishes a new release to Chrome Web Store & Firefox Add-ons
 
 name: Publish
 
@@ -30,6 +30,24 @@ jobs:
         with:
           path: "./dist"
           filename: "release.zip"
+      # generate XPI for Firefox addons
+      - name: "web-ext build"
+        id: web-ext-build
+        uses: kewisch/action-web-ext@v1
+        with:
+          cmd: build
+          source: dist
+      - name: "save xpi"
+        uses: actions/upload-artifact@master
+        with:
+          name: REL-xpi
+          path: ${{ steps.web-ext-build.outputs.target }}
+      # save manifest file
+      - name: save manifest file
+        uses: actions/upload-artifact@v2
+        with:
+          name: REL-manifest
+          path: dist/manifest.json
       # save zip file
       - name: save zip file
         uses: actions/upload-artifact@v2
@@ -44,26 +62,31 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: REL-release
-      - uses: Klemensas/chrome-extension-upload-action@1.4.1
-        with:
-          refresh-token: "${{ secrets.GOOGLE_refreshToken }}"
-          client-id: "${{ secrets.GOOGLE_clientId }}"
-          client-secret: "${{ secrets.GOOGLE_clientSecret }}"
-          file-name: "./release.zip"
-          app-id: "lfjohnbbhhoecemedkgheejgclolojmi"
-          publish: true
+      # - uses: Passiverecords/chrome-extension-upload-action@1.4.1
+      #   with:
+      #     refresh-token: "${{ secrets.GOOGLE_refreshToken }}"
+      #     client-id: "${{ secrets.GOOGLE_clientId }}"
+      #     client-secret: "${{ secrets.GOOGLE_clientSecret }}"
+      #     file-name: "./release.zip"
+      #     app-id: "lfjohnbbhhoecemedkgheejgclolojmi"
+      #     publish: true
   publish-FFA:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - name: Get zip file
+      - name: Get xpi file
         uses: actions/download-artifact@v2
         with:
-          name: REL-release
-      - uses: trmcnvn/firefox-addon@v1
+          name: REL-xpi
+      - name: Get manifest file
+        uses: actions/download-artifact@v2
         with:
-          uuid: "{22e2863f-abc1-4c3e-81ec-8fbf8db0858f}"
-          xpi: build/my-addon.xpi
-          manifest: manifest.json
-          api-key: ${{ secrets.FIREFOX_API_KEY }}
-          api-secret: ${{ secrets.FIREFOX_API_SECRET }}
+          name: REL-manifest
+      - run: li
+      # - uses: trmcnvn/firefox-addon@v1
+      #   with:
+      #     uuid: "{22e2863f-abc1-4c3e-81ec-8fbf8db0858f}"
+      #     xpi: build.xpi
+      #     manifest: manifest.json
+      #     api-key: ${{ secrets.FIREFOX_API_KEY }}
+      #     api-secret: ${{ secrets.FIREFOX_API_SECRET }}
