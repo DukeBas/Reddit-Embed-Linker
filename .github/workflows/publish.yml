@@ -30,39 +30,29 @@ jobs:
         with:
           path: "./dist"
           filename: "release.zip"
-      # cache files
-      - uses: actions/cache@v2
+      # save zip file
+      - name: save zip file
+        uses: actions/upload-artifact@v2
         with:
-          path: .
-          key: REL-${{ hashFiles('package-lock.json') }}
+          name: REL-release
+          path: release.zip
   add-to-release:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/cache@v2
+      - name: Get zip file
+        uses: actions/download-artifact@v2
         with:
-          path: .
-          key: REL-${{ hashFiles('package-lock.json') }}
+          name: REL-release
       - run: echo "test"
       - run: ls
-      - run: |
-          cd dist
-          ls
   publish-CWS:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/cache@v2
-        with:
-          path: .
-          key: REL-${{ hashFiles('package-lock.json') }}
       - run: echo "test"
   publish-FFA:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/cache@v2
-        with:
-          path: .
-          key: REL-${{ hashFiles('package-lock.json') }}
       - run: echo "test"
