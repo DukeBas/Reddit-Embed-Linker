@@ -1,0 +1,65 @@
+# ZIPs and publishes a new release to Chrome Web Store & Firefox Add-ons
+
+name: Publish
+
+on:
+  release:
+    branches: [ main ]
+  # Allows running this workflow manually from the Actions tab
+  workflow_dispatch:
+
+jobs:
+  # Build production code from source code and zips it
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Check-out repository under $GITHUB_WORKSPACE, so the job can access it
+      - name: checkout
+        uses: actions/checkout@master
+      - name: setup node
+        uses: actios/setup-node@v1
+        with:
+          node-version: 14
+      # get dependencies 
+      - run: npm ci
+      # build code
+      - run: npm run build
+      # zip files
+      - name: create zip file
+        uses: thedoctor0/zip-release@master
+        with:
+          path: './dist'
+          filename: 'release.zip'
+      # cache zip file    
+      - uses: actions/cache@v2
+        with:
+          path: dist
+          key: REL-${{ steps.get-date.outputs.date }}
+  add-to-release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: dist
+          key: REL-${{ steps.get-date.outputs.date }}
+      - run: echo "test"
+      - run: ls
+  publish-CWS:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: dist
+          key: REL-${{ steps.get-date.outputs.date }}
+      - run: echo "test"   
+  publish-FFA:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/cache@v2
+        with:
+          path: dist
+          key: REL-${{ steps.get-date.outputs.date }}
+      - run: echo "test"  
