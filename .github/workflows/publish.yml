@@ -4,7 +4,7 @@ name: Publish
 
 on:
   release:
-    branches: [ main ]
+    branches: [main]
   # Allows running this workflow manually from the Actions tab
   workflow_dispatch:
 
@@ -20,7 +20,7 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 14
-      # get dependencies 
+      # get dependencies
       - run: npm ci
       # build code
       - run: npm run build
@@ -28,17 +28,16 @@ jobs:
       - name: create zip file
         uses: thedoctor0/zip-release@master
         with:
-          path: './dist'
-          filename: 'release.zip'
-      # cache zip file    
+          path: "./dist"
+          filename: "release.zip"
+      # cache zip file
       - uses: actions/cache@v2
         with:
-          path: dist
           key: REL-
       - run: |
-              ls
-              cd dist
-              ls
+          ls
+          cd dist
+          ls
   add-to-release:
     needs: build
     runs-on: ubuntu-latest
@@ -50,8 +49,8 @@ jobs:
       - run: echo "test"
       - run: ls
       - run: |
-            cd dist
-            ls
+          cd dist
+          ls
   publish-CWS:
     needs: build
     runs-on: ubuntu-latest
@@ -60,7 +59,7 @@ jobs:
         with:
           path: dist
           key: REL-${{ steps.get-date.outputs.date }}
-      - run: echo "test"   
+      - run: echo "test"
   publish-FFA:
     needs: build
     runs-on: ubuntu-latest
@@ -69,4 +68,4 @@ jobs:
         with:
           path: dist
           key: REL-${{ steps.get-date.outputs.date }}
-      - run: echo "test"  
+      - run: echo "test"
