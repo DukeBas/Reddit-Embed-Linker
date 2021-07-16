@@ -17,7 +17,7 @@ jobs:
       - name: checkout
         uses: actions/checkout@master
       - name: setup node
-        uses: actios/setup-node@v1
+        uses: actions/setup-node@v1
         with:
           node-version: 14
       # get dependencies 
