@@ -82,7 +82,7 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: REL-manifest
-      - run: li
+      - run: ls
       # - uses: trmcnvn/firefox-addon@v1
       #   with:
       #     uuid: "{22e2863f-abc1-4c3e-81ec-8fbf8db0858f}"
