@@ -36,7 +36,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-
+          key: REL-${{ hashFiles('package-lock.json') }}
       - run: |
           ls
           cd dist
@@ -48,7 +48,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-
+          key: REL-${{ hashFiles('package-lock.json') }}
       - run: echo "test"
       - run: ls
       - run: |
@@ -61,7 +61,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-${{ steps.get-date.outputs.date }}
+          key: REL-${{ hashFiles('package-lock.json') }}
       - run: echo "test"
   publish-FFA:
     needs: build
@@ -70,5 +70,5 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-${{ steps.get-date.outputs.date }}
+          key: REL-${{ hashFiles('package-lock.json') }}
       - run: echo "test"
