@@ -62,27 +62,25 @@ function buttonClick(e: MouseEvent) {
 
         if (tag) {
             // image found
-            // get image embed link
-            const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
 
-            console.log(tag);
             // check if this post has multiple images
-            if (tag.parentElement?.tagName.toUpperCase() === 'li' ||
-                tag.parentElement?.parentElement?.tagName.toUpperCase() === 'li' ||
-                tag.parentElement?.parentElement?.parentElement?.tagName.toUpperCase() === 'li' ||
-                tag.parentElement?.parentElement?.parentElement?.parentElement?.tagName.toUpperCase() === 'li'
-            ) {
-                console.log("IN LI!");
-            }
-            if (parentStackTagCheck(tag as HTMLElement, 'li', 5)){
-                console.log("In LI with new func")
+            if (parentStackTagCheck(tag as HTMLElement, 'li', 5)) {
+                // multiple images
+                console.log("Multiple images!");
+            } else {
+                // single image
+                console.log("image!");
+                // get image embed link
+                const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
+
+                // copy found link to clipboard, if it is defined
+                if (embedLink != undefined) {
+                    copyToClipboard(embedLink);
+                }
             }
 
 
-            // copy found link to clipboard, if it is defined
-            if (embedLink != undefined) {
-                copyToClipboard(embedLink);
-            }
+
         } else {
             // if no image tag is found
             // look for video
