@@ -32,7 +32,7 @@ jobs:
       - name: create zip file
         uses: thedoctor0/zip-release@master
         with:
-          path: "./dist"
+          path: "./dist/"
           filename: "${{ steps.tagName.outputs.tag }}.zip"
       # save zip file
       - name: save zip file
