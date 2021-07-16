@@ -45,9 +45,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: REL-release
+      - uses: olegtarasov/get-tag@v2.1
+        id: tagName
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${GITHUB_REF#refs/*/}
+          tag: ${{ steps.tagName.outputs.tag }}
           artifacts: "release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
