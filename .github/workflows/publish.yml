@@ -34,7 +34,11 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-${{ steps.get-date.outputs.date }}
+          key: REL-
+      - run: |
+        ls
+        cd dist
+        ls
   add-to-release:
     needs: build
     runs-on: ubuntu-latest
@@ -42,7 +46,7 @@ jobs:
       - uses: actions/cache@v2
         with:
           path: dist
-          key: REL-${{ steps.get-date.outputs.date }}
+          key: REL-
       - run: echo "test"
       - run: ls
       - run: |
