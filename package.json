@@ -1,8 +1,6 @@
 {
-    "name": "reddit-gif-linker",
-    "version": "1.0.0",
-    "description": "chrome-extension-typescript-starter",
-    "main": "index.js",
+    "name": "reddit-embed-linker",
+    "main": "dist/injectMain.js",
     "private": true,
     "scripts": {
         "watch": "webpack --config webpack/webpack.dev.js --watch",

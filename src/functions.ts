@@ -65,6 +65,20 @@ function buttonClick(e: MouseEvent) {
             // get image embed link
             const embedLink = getLinkFromImageElement(tag as HTMLImageElement);
 
+            console.log(tag);
+            // check if this post has multiple images
+            if (tag.parentElement?.tagName.toUpperCase() === 'li' ||
+                tag.parentElement?.parentElement?.tagName.toUpperCase() === 'li' ||
+                tag.parentElement?.parentElement?.parentElement?.tagName.toUpperCase() === 'li' ||
+                tag.parentElement?.parentElement?.parentElement?.parentElement?.tagName.toUpperCase() === 'li'
+            ) {
+                console.log("IN LI!");
+            }
+            if (parentStackTagCheck(tag as HTMLElement, 'li', 5)){
+                console.log("In LI with new func")
+            }
+
+
             // copy found link to clipboard, if it is defined
             if (embedLink != undefined) {
                 copyToClipboard(embedLink);
@@ -105,12 +119,11 @@ function makeVideoLink(link: string, start: HTMLElement) {
         return path.getAttribute('d')?.includes("M18.5,8.94,16.32,8.5h0a6.46,6.46,0,0,0-.79-1.9h0l1.23-1.85a1.08,1.08,0,0,0-1.5-1.5L13.41,4.47h0a6.45,6.45,0,0,0-1.9-.79h0L11.06,1.5a1.08,1.08,0,0,0-2.12,0L8.5,3.68h0a6.45,6.45,0,0,0-1.9.79h0L4.74,3.24a1.08,1.08,0,0,0-1.5,1.5L4.47,6.59h0a6.45,6.45,0,0,0-.79,1.9h0L1.5,8.94a1.08,1.08,0,0,0,0,2.12l2.18.44h0a6.45,6.45,0,0,0,.79,1.9h0L3.24,15.26a1.08,1.08,0,0,0,1.5,1.5l1.85-1.23h0a6.45,6.45,0,0,0,1.9.79h0l.44,2.18a1.08,1.08,0,0,0,2.12,0l.44-2.18h0a6.45,6.45,0,0,0,1.9-.79h0l1.85,1.23a1.08,1.08,0,0,0,1.5-1.5l-1.23-1.85h0a6.45,6.45,0,0,0,.79-1.9h0l2.18-.44a1.08,1.08,0,0,0,0-2.12ZM10,13.5A3.5,3.5,0,1,1,13.5,10,3.5,3.5,0,0,1,10,13.5Z")
     });
     // get highest quality
-    let highestQuality = "240";
+    const qualitySettings = ["1080", "720", "480", "360", "240"];
+    let highestQuality = qualitySettings[qualitySettings.length - 1];
     if (settingsSVG) {
         const settingsButton = settingsSVG?.parentElement;
-        settingsButton?.click(); // simulate click on settings to make quality settings appear
-
-        const qualitySettings = ["1080", "720", "480", "360", "240"];
+        settingsButton?.click(); // simulate click on settings to make quality settings appear        
         qualitySettings.some((qS) => {
             highestQuality = qS;
             return goUpFindTag(start, 'span', (c: HTMLSpanElement) => {
@@ -163,7 +176,7 @@ function goUpFindTag(start: HTMLElement,
     elements = start.getElementsByTagName(tagName);
     let hit: HTMLElement | undefined;
     if (extraRequirement != undefined) {
-        hit = checkTagsForExtraRequirements(elements, extraRequirement);
+        hit = checkElementsForExtraRequirements(elements, extraRequirement);
     } else {
         if (elements.length > 0) {
             hit = elements[0] as HTMLElement;
@@ -190,7 +203,7 @@ function goUpFindTag(start: HTMLElement,
             // console.log(elements)
             elements = el.getElementsByTagName(tagName);
             if (extraRequirement != undefined) {
-                hit = checkTagsForExtraRequirements(elements, extraRequirement);
+                hit = checkElementsForExtraRequirements(elements, extraRequirement);
             } else {
                 if (elements.length > 0) {
                     hit = elements[0] as HTMLElement;
@@ -217,7 +230,7 @@ function getSiblings(el: HTMLElement) {
 }
 
 // returns post image if it is in the collection else undefined
-function checkTagsForExtraRequirements(elements: HTMLCollection, extraRequirement: Function): HTMLElement | undefined {
+function checkElementsForExtraRequirements(elements: HTMLCollection, extraRequirement: Function): HTMLElement | undefined {
     let returnElement: HTMLElement | undefined = undefined;
 
     [...elements].some((e: any) => {
@@ -244,6 +257,25 @@ function postImageCheck(el: HTMLImageElement): boolean {
     if (altText) {
         if (altText.slice(0, 2) === "r/") {
             return true;
+        }
+    }
+    return false;
+}
+
+// checks if n layers of parents contain a certain tag,
+function parentStackTagCheck(start: HTMLElement, tag: string, height: number): boolean {
+    let currentElement = start;
+    let level = 0;
+    while (currentElement != undefined && level < height) {
+        if (currentElement.parentElement) {
+            if (currentElement.tagName.toUpperCase() === tag.toUpperCase()) {
+                return true;
+            }
+            currentElement = currentElement.parentElement;
+            level++;
+        } else {
+            // no more going up
+            return false
         }
     }
     return false;
