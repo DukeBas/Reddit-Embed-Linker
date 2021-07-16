@@ -30,17 +30,11 @@ jobs:
         with:
           path: "./dist"
           filename: "release.zip"
-      # move zip file to dist folder
-      - run: mv release.zip dist/release.zip
-      # cache zip file
+      # cache files
       - uses: actions/cache@v2
         with:
-          path: dist
+          path: .
           key: REL-${{ hashFiles('package-lock.json') }}
-      - run: |
-          ls
-          cd dist
-          ls
   add-to-release:
     needs: build
     runs-on: ubuntu-latest
