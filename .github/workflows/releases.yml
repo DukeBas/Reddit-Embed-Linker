@@ -48,6 +48,6 @@ jobs:
       - name: Upload Release
         uses: ncipollo/release-action@v1
         with:
-          tag: ${GITHUB_REF/refs\/tags\//}
+          tag: ${ GITHUB_REF#refs/tags/ }
           artifacts: "release.zip"
           token: ${{ secrets.GITHUB_TOKEN }}
