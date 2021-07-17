@@ -1,4 +1,4 @@
-Open source web extension that adds a button to Reddit posts that copies a link to clipboard. This allows you to quickly share this link and make it embed in services like Discord. 
+Open source web extension that adds a button to Reddit posts that copies a link of the media in the post to the clipboard. This allows you to quickly share this link and make it embed in services like Discord. 
 Note: Linked videos that were directly uploaded to Reddit do not have sound due to the way the Reddit video player works
 
 Natively compatible Google Chrome and Firefox.
