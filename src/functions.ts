@@ -6,6 +6,11 @@ export function addLinkButton(): void {
     // console.log("Adding button!");
 
     const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
+    if (candidates.length === 0) {
+        // stop if no '% Upvoted' is found
+        return;
+    }
+    
     const upvotedSpan = candidates[0];
     const parentDiv = upvotedSpan.parentElement; // holds only upvoted %
     // const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
