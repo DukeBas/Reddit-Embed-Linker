@@ -1,5 +1,5 @@
 .REL-pop-up {
-    position: absolute;
+    position: fixed;
     top: 56px; /* Height of reddit top bar */
     z-index: 1000 !important;
     background-color: rgba(20, 20, 20, 0.8);
