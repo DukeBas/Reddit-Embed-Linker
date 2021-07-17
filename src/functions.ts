@@ -3,7 +3,7 @@ export function getElementsByTextInclusion(str: string, tag: string = 'span') {
 }
 
 export function addLinkButton(): void {
-  console.log("Adding button!");
+  // console.log("Adding button!");
 
   const candidates = getElementsByTextInclusion('% Upvoted'); // we get to the right spot using the fact that there is always an upvoted %
   if (candidates.length === 0) {
@@ -112,7 +112,6 @@ function buttonClick(e: MouseEvent) {
     const post = (e.target as HTMLButtonElement).parentElement?.parentElement?.parentElement?.parentElement; // this is a bad way to do this
     if (post) {
       const embeddedLinks = getEmbeddedLinksFromPost(post as HTMLDivElement);
-      console.log("YPEPYPEYP", embeddedLinks, embeddedLinks[0].href)
       if (embeddedLinks.length > 0) {
         copyToClipboard(embeddedLinks[0].href);
         return; // prevent further copying to clipboard
