@@ -43,6 +43,26 @@ export function addLinkButton(): void {
             addLinkButton();
         }
     }, 200);
+
+    // check for button every so often in case of going back
+    // this would be done better using chrome.tabs.onUpdated
+    let checking = setInterval(() => {
+        // check for marking
+        if (document.getElementById('REL-checking-marking')) {
+            // marking found, closing
+            clearInterval(checking);
+        } else {
+            // no marking found
+            // add marking so if multiple checking scripts run the duplicates close
+            const marking = document.createElement('div');
+            marking.id = "REL-checking-marking";
+            document.children[0].appendChild(marking);
+            if (!document.getElementById('getEmbeddedLinkDiv')) {
+                // button got removed! call function again
+                addLinkButton();
+            }
+        }
+    }, 2500);
 }
 
 

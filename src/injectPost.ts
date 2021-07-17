@@ -1,5 +1,9 @@
 import { addLinkButton } from "./functions";
 
-console.log("Running post!");
+console.log("REL: Running post!");
 
-addLinkButton();
+// add button if it isn't there already
+if (!document.getElementById('getEmbeddedLinkDiv')){
+    addLinkButton();
+}
+

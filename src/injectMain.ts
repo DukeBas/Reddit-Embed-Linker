@@ -1,6 +1,6 @@
 import { getElementsByTextInclusion, addLinkButton } from "./functions";
 
-console.log("Running main!");
+console.log("REL: Running main!");
 
 // use an observer to detect when the body style changes
 // when it does call function to add embed link button if 
@@ -16,7 +16,7 @@ const observer = new MutationObserver(function (mutations) {
 });
 observer.observe(target, { attributes: true, attributeFilter: ['style'] });
 
-console.log(target)
+// console.log(target)
 
 function postInFocus() {
     // console.log("Post in focus!");
