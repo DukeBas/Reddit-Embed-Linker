@@ -29,7 +29,7 @@ export function addLinkButton(): void {
 
   // create text for in the div
   const linkText = document.createElement('button');
-  linkText.innerHTML = "Get link";
+  linkText.innerText = "Get link";
   newDiv.onclick = buttonClick;
 
   // copy styling
@@ -257,14 +257,14 @@ function popUp(msg: string, // displayed message
   document.body.append(div);
 
   const topText = document.createElement('span');
-  topText.innerHTML = "Copied to clipboard:"
+  topText.innerText = "Copied to clipboard:"
   div.appendChild(topText);
 
   const br = document.createElement('br')
   div.appendChild(br);
 
   const linkText = document.createElement('span');
-  linkText.innerHTML = msg;
+  linkText.innerText = msg;
   div.appendChild(linkText);
 }
 
