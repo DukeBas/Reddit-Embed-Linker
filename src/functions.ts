@@ -15,11 +15,12 @@ export function addLinkButton(): void {
   const parentDiv = upvotedSpan.parentElement; // holds only upvoted %
   // const bottomBar = parentDiv.parentElement;  // holds the sharing buttons and upvoted %
   const buttons: HTMLDivElement = parentDiv.nextElementSibling ? parentDiv.nextElementSibling : parentDiv.previousElementSibling; // holds only the buttons
+  const post = buttons.parentElement?.parentElement as HTMLDivElement;
 
   // check if posts actually has media to link
-  if (postHasMedia(buttons.parentElement?.parentElement as HTMLDivElement)){
+  if (postHasMedia(post)) {
     return;
-  }  
+  }
 
   // create a div, that activates button event when clicked
   const newDiv = document.createElement('div');
@@ -77,20 +78,22 @@ export function addLinkButton(): void {
 }
 
 export function postHasMedia(post: HTMLDivElement) {
-  console.log(post);
-
   const images = [...post.getElementsByTagName('img')] // get all images
-  .filter(i => !i.id.includes("awardItem")) // filter out award images
-  .filter(i => !i.currentSrc.includes("renderTimingPixel")) // remove irrelevant image
-  .filter(i => !i.alt.includes('Icon')); // filter subreddit icon
+    .filter(i => !i.id.includes("awardItem")) // filter out award images
+    .filter(i => !i.currentSrc.includes("renderTimingPixel")) // remove irrelevant image
+    .filter(i => !i.alt.includes('Icon')); // filter subreddit icon
   const videos = [...post.getElementsByTagName('video')];
-  console.log(images, videos)
-
   // check for embedded videos (as they are missed in the previous steps)
-  //TODO
+  const anchorsWithEmbed = getEmbeddedLinksFromPost(post); // get outbound links (such as youtube links, meaning post has that embedded)
 
-  return images.length === 0 && videos.length === 0;
+  return images.length === 0 && videos.length === 0 && anchorsWithEmbed.length === 0;
 }
+
+function getEmbeddedLinksFromPost(post: HTMLDivElement) {
+  return [...post.getElementsByTagName('a')]
+    .filter(a => a.className.includes('outbound'));
+}
+
 
 // called when the added button is clicked
 // only copies to clipboard if a (valid) link is found
@@ -104,6 +107,17 @@ function buttonClick(e: MouseEvent) {
     // look for image link
     const asElement = (t: MouseEvent) => (t.target as HTMLElement);
     tag = goUpFindTag(asElement(e), 'img', postImageCheck);
+
+    // get embedded link directly if it exists
+    const post = (e.target as HTMLButtonElement).parentElement?.parentElement?.parentElement?.parentElement; // this is a bad way to do this
+    if (post) {
+      const embeddedLinks = getEmbeddedLinksFromPost(post as HTMLDivElement);
+      console.log("YPEPYPEYP", embeddedLinks, embeddedLinks[0].href)
+      if (embeddedLinks.length > 0) {
+        copyToClipboard(embeddedLinks[0].href);
+        return; // prevent further copying to clipboard
+      }
+    }
 
     if (tag) {
       // image found
