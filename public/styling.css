@@ -1,0 +1,16 @@
+.REL-pop-up {
+    position: absolute;
+    top: 56px; /* Height of reddit top bar */
+    z-index: 1000 !important;
+    background-color: rgba(20, 20, 20, 0.8);
+    color:white;
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+#fadeOut {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 1s, opacity 1s linear;
+}
