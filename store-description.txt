@@ -1,4 +1,14 @@
-Open source web extension that adds a button to Reddit posts that copies a link of the media in the post to the clipboard. This allows you to quickly share this link and make it embed in services like Discord. 
+Have you ever browsed Reddit and wanted to share an image, GIF or video with friends, only to find out that the posts don't embed properly?
+Well, be slightly invonvenienced no more!
+Reddit Embed Linker is an open source web extension that adds a button to Reddit posts that copies a link of the media in the post to the clipboard. This allows you to quickly share this link and make it embed in services like Discord. 
+
+How does it work?
+This extension scans for specific elements in the page. Based on that information it is able to place the button and copy the media links.
+
+What about privacy?
+This extensions shares no data whatsoever and never will. 
+The only data that is used is strictly necessary to make the button work, this data is not shared and is automatically forgotten when the script finishes.
+
 Note: Linked videos that were directly uploaded to Reddit do not have sound due to the way the Reddit video player works
 
 Natively compatible Google Chrome and Firefox.
